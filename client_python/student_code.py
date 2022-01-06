@@ -10,6 +10,8 @@ from pygame import gfxdraw
 import pygame
 from pygame import *
 
+from Game import Game
+
 # init pygame
 WIDTH, HEIGHT = 1080, 720
 
@@ -36,9 +38,8 @@ graph_json = client.get_graph()
 FONT = pygame.font.SysFont('Arial', 20, bold=True)
 # load the json string into SimpleNamespace Object
 
-
-graph = json.loads(
-    graph_json, object_hook=lambda json_dict: SimpleNamespace(**json_dict))
+game = Game(client.get_info())
+graph = game.graph
 
 for n in graph.Nodes:
     x, y, _ = n.pos.split(',')
