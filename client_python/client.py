@@ -194,7 +194,7 @@ class Client:
 
     def stop_connection(self):
         """
-        use it to close the connection 'gracefuly'
+        use it to close the connection 'gracefully'
         """
         res = self.__send_message('.')
         if res == 'good bye':

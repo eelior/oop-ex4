@@ -5,7 +5,7 @@ from GraphNode import GraphNode
 class DiGraph(GraphInterface):
 
     def __init__(self):
-        self.node_map = {}
+        self.Nodes = {}
         self.src_dst = {} # out
         self.dst_src = {} # in
         self.mc = 0
@@ -13,7 +13,7 @@ class DiGraph(GraphInterface):
 
     def __repr__(self):
         graph_str = "Graph: |V|="+str(self.v_size())+", |E|="+str(self.e_size())+"\n"
-        for i in self.node_map.keys():
+        for i in self.Nodes.keys():
             if self.all_out_edges_of_node(i) is None:
                 if self.all_in_edges_of_node(i) is None:
                     graph_str += str(i) + ": |edges out|=" + str(0) + \
@@ -31,11 +31,11 @@ class DiGraph(GraphInterface):
         return graph_str
 
     def v_size(self) -> int:
-        return len(self.node_map)
+        return len(self.Nodes)
 
     def e_size(self) -> int:
         size = 0
-        for i in self.node_map:
+        for i in self.Nodes:
             if i in self.dst_src.keys():
                 size += len(self.dst_src[i])
         return size
@@ -47,7 +47,7 @@ class DiGraph(GraphInterface):
         """return a dictionary of all the nodes in the Graph, each node is represented using a pair
          (node_id, node_data)
         """
-        return self.node_map
+        return self.Nodes
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
         """
@@ -63,7 +63,7 @@ class DiGraph(GraphInterface):
         if weight < 0:      # check if weight is valid
             return False
         # check if the nodes exist
-        if self.node_map.get(id1) is None or self.node_map.get(id2) is None:
+        if self.Nodes.get(id1) is None or self.Nodes.get(id2) is None:
             return False
 
         if id1 in self.src_dst.keys():      # check if the edge already exists
@@ -95,18 +95,18 @@ class DiGraph(GraphInterface):
         @return: True if the node was added successfully, False o.w.
         Note: if the node id already exists the node will not be added
         """
-        if self.node_map.get(node_id):    # check if the ID is already taken
+        if self.Nodes.get(node_id):    # check if the ID is already taken
             return False
         n = GraphNode(node_id, pos)      # create new node
 
         self.mc += 1
-        self.node_map[node_id] = n
+        self.Nodes[node_id] = n
         return True
 
     def remove_node(self, node_id: int) -> bool:
-        if self.node_map.get(node_id) is None:
+        if self.Nodes.get(node_id) is None:
             return False
-        del self.node_map[node_id]
+        del self.Nodes[node_id]
 
         for i in self.dst_src[node_id].keys():
             if self.src_dst[i] is not None:
@@ -147,8 +147,8 @@ class DiGraph(GraphInterface):
         return self.src_dst.get(id1)
 
     def printnode_map(self):
-        for i in self.node_map.keys():
-            print("id = ", i, " pos = ", self.node_map.get(i))
+        for i in self.Nodes.keys():
+            print("id = ", i, " pos = ", self.Nodes.get(i))
 
     def print_edges(self):
         for i in self.src_dst.keys():

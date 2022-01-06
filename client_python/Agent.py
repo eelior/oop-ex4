@@ -6,3 +6,5 @@ class Agent:
         self.dest = dest
         self.speed = speed
         self.pos = pos
+
+        self.nextPositions = []

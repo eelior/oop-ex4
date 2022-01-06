@@ -1,6 +1,7 @@
 import json
 
-from client_python.GraphAlgo import GraphAlgo
+from GraphAlgo import GraphAlgo
+
 
 
 class Game:
@@ -35,8 +36,8 @@ returns the current game info. for example:\n
         self.agents = [] #list of agents
 
         """load graph"""
-        self.graph = GraphAlgo()
-        self.graph.load_from_json(load_game['graph'])
+        self.graphAlgo = GraphAlgo()
+        self.graphAlgo.load_from_json(load_game['graph'])
 
 """
 returns: json str of agents. for example:\n

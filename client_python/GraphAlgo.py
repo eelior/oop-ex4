@@ -6,12 +6,8 @@ from typing import List
 from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
 from PriorityQueue import PriorityQueue, NodeVal
-import matplotlib.pyplot as plt
-import matplotlib
-import matplotlib.backends.backend_agg as agg
 import pygame
 from pygame.locals import *
-import easygui
 from GraphInterface import GraphInterface
 
 INF = 20000000
@@ -40,13 +36,14 @@ class GraphAlgo(GraphAlgoInterface):
         return self.graph
 
     def load_from_json(self, file_name: str) -> bool:
-        file = open("../"+file_name)
+        file = open(""+file_name)
         graph_data = json.load(file)
         self.graph = DiGraph()
         for i in graph_data["Nodes"]:
             pos_tuple = None
             if "pos" in i:
                 pos_tuple = tuple(map(float, i["pos"].split(',')))
+                
             if not self.graph.add_node(i["id"], pos_tuple):
                 file.close()
 
@@ -197,39 +194,3 @@ class GraphAlgo(GraphAlgoInterface):
                 temp.pop(i)
 
         return temp,shortest_path
-
-
-    def plot_graph(self) -> None:
-        """
-        This is the function that manage the GUI.
-        First the user will be asked if he wants to use the advanced GUI (with buttons) or just
-        draw the graph using just matplotlib.
-        """
-        # GUI = easygui.boolbox(
-        #     "Do you want simple or advanced GUI?\n *advanced GUI is WIP and likely to crash when given wrong inputs\nbut do play with it :)", choices=("Advanced", "Simple"))
-        fig, axes = plt.subplots(figsize=(7, 5))
-        axes.set_title("Graph " + self.name + "",
-                        {'fontname': 'Courier New'}, fontsize=20)
-    
-        for node in self.graph.node_map.values():
-            plt.scatter(node.pos[0], node.pos[1], s=20, color="red")
-            plt.text(node.pos[0] + 0.00002, node.pos[1] +
-                        0.00006, str(node.id), color="red", fontsize=10)
-    
-        ecount = 0
-        for dest in self.graph.node_map.values():
-            currDict = self.graph.all_out_edges_of_node(dest.id)
-            destx = dest.pos[0]
-            desty = dest.pos[1]
-            if currDict is not None:
-                for currEdge in currDict:
-                    srcx = self.graph.node_map.get(currEdge).pos[0]
-                    srcy = self.graph.node_map.get(currEdge).pos[1]
-                    plt.annotate("", xy=(srcx, srcy), xytext=(
-                        destx, desty), arrowprops=dict(arrowstyle="->"))
-                    ecount += 1
-    
-        if ecount != self.graph.e_size():
-            print("error has been occurred")
-        else:
-            plt.show()
