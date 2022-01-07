@@ -3,3 +3,9 @@ class Pokemon:
         self.value = value
         self.type = type
         self.pos = pos
+
+    def __str__(self):
+        return f'[value={self.value},type={self.type},pos={self.pos}]'
+
+    def __repr__(self):
+        return f'[value={self.value},type={self.type},pos={self.pos}]'

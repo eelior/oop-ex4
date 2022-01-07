@@ -90,6 +90,10 @@ The GUI and the "algo" are mixed - refactoring using MVC design pattern is requi
 """
 
 while client.is_running() == "true":
+    game.load_agents(client.get_agents())
+    game.load_pokemon(client.get_pokemons())
+    print(game.find_poke_location(game.pokemons[0]))
+
     pokemons = json.loads(
         client.get_pokemons(), object_hook=lambda d: SimpleNamespace(**d)
     ).Pokemons
@@ -102,6 +106,7 @@ while client.is_running() == "true":
     agents = json.loads(
         client.get_agents(), object_hook=lambda d: SimpleNamespace(**d)
     ).Agents
+
     agents = [agent.Agent for agent in agents]
     for a in agents:
         x, y, _ = a.pos.split(",")
@@ -122,8 +127,6 @@ while client.is_running() == "true":
 
         x = my_scale(n.pos[0], x=True)
         y = my_scale(n.pos[1], y=True)
-        print(n.pos[0], x)
-        print(n.pos[1], y)
 
         # its just to get a nice antialiased circle
         gfxdraw.filled_circle(screen, int(x), int(y), radius, Color(64, 80, 174))

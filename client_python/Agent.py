@@ -8,3 +8,9 @@ class Agent:
         self.pos = pos
 
         self.nextPositions = []
+
+    def __str__(self):
+        return f'[id={self.id},value={self.value},src={self.src},dest={self.dest},speed={self.speed},pos={self.pos}]'
+
+    def __repr__(self):
+        return f'[id={self.id},value={self.value},src={self.src},dest={self.dest},speed={self.speed},pos={self.pos}]'

@@ -36,7 +36,7 @@ class GraphAlgo(GraphAlgoInterface):
         return self.graph
 
     def load_from_json(self, file_name: str) -> bool:
-        file = open(""+file_name)
+        file = open("../"+file_name)
         graph_data = json.load(file)
         self.graph = DiGraph()
         for i in graph_data["Nodes"]:
