@@ -1,8 +1,8 @@
 import json
 
 from GraphAlgo import GraphAlgo
-from client_python.Agent import Agent
-from client_python.Pokemon import Pokemon
+from Agent import Agent
+from Pokemon import Pokemon
 
 
 class Game:
@@ -86,7 +86,6 @@ class Game:
                     if x3 == x2 and (y2 <= y3 <= y1 or y1 <= y3 <= y2):
                         """the pokemon is alligned with the line and between the src and node"""
                         return src, dst
-                # print('(',y2,'-',y1,') / (',x2 ,'-', x1,')')
                 slope = (y2 - y1) / (x2 - x1)
                 """if the pokemon is on the slope"""
                 if (y3 - y1) == slope * (x3 - x1):

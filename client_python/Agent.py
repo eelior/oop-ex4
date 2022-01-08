@@ -1,3 +1,6 @@
+import pygame
+
+
 class Agent:
     def __init__(self, id1: int, value: float, src: int, dest: int, speed: float, pos: tuple):
         self.id = id1
@@ -6,6 +9,7 @@ class Agent:
         self.dest = dest
         self.speed = speed
         self.pos = pos
+        self.avatar = pygame.image.load('client_python/ash_katchum.png')
 
         self.nextPositions = []
 

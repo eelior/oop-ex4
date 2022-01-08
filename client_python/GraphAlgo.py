@@ -12,8 +12,8 @@ from GraphInterface import GraphInterface
 
 INF = 20000000
 
-class GraphAlgo(GraphAlgoInterface):
 
+class GraphAlgo(GraphAlgoInterface):
     def __init__(self, g: DiGraph = None):
         """
         Init the graph, prepares the variables for the GUI and gives it a name
@@ -36,14 +36,14 @@ class GraphAlgo(GraphAlgoInterface):
         return self.graph
 
     def load_from_json(self, file_name: str) -> bool:
-        file = open("../"+file_name)
+        file = open("" + file_name)
         graph_data = json.load(file)
         self.graph = DiGraph()
         for i in graph_data["Nodes"]:
             pos_tuple = None
             if "pos" in i:
-                pos_tuple = tuple(map(float, i["pos"].split(',')))
-                
+                pos_tuple = tuple(map(float, i["pos"].split(",")))
+
             if not self.graph.add_node(i["id"], pos_tuple):
                 file.close()
 
@@ -72,13 +72,14 @@ class GraphAlgo(GraphAlgoInterface):
             for destNode in self.graph.dst_src.items():
                 for srcNode in destNode[1].items():
                     edges.append(
-                        {"src": srcNode[0], "w": srcNode[1], "dest": destNode[0]})
+                        {"src": srcNode[0], "w": srcNode[1], "dest": destNode[0]}
+                    )
 
             graphdict = {}
             graphdict["Edges"] = edges
             graphdict["Nodes"] = nodes
 
-            with open("../"+file_name, "w") as file:
+            with open("../" + file_name, "w") as file:
                 json.dump(graphdict, fp=file)
             return True
         except:
@@ -92,7 +93,7 @@ class GraphAlgo(GraphAlgoInterface):
 
         q = PriorityQueue()
         for i in self.graph.node_map.keys():
-            dist[i] = float('inf')
+            dist[i] = float("inf")
 
         dist[id1] = 0
         src = NodeVal(id1)
@@ -115,7 +116,7 @@ class GraphAlgo(GraphAlgoInterface):
                         dist[v.id] = alt
                         prev[v.id] = u.id
 
-        if dist[id2] == float('inf'):
+        if dist[id2] == float("inf"):
             return dist[id2], []
 
         prevlist = [id2]
@@ -129,7 +130,9 @@ class GraphAlgo(GraphAlgoInterface):
 
     def centerPoint(self) -> (int, float):
         # floyd warshall algo- first we get a neighboring matrice
-        dist = [[float('inf')] * self.graph.v_size() for i in range(self.graph.v_size())]
+        dist = [
+            [float("inf")] * self.graph.v_size() for i in range(self.graph.v_size())
+        ]
         for i in range(self.graph.v_size()):
             dist[i][i] = 0
 
@@ -142,7 +145,7 @@ class GraphAlgo(GraphAlgoInterface):
                     if dist[i][j] > dist[i][k] + dist[k][j]:
                         dist[i][j] = dist[i][k] + dist[k][j]
 
-        min_longest_path = float('inf')
+        min_longest_path = float("inf")
         center_id = 0
         for i in range(self.graph.v_size()):
             current_max_path = 0
@@ -160,26 +163,31 @@ class GraphAlgo(GraphAlgoInterface):
         original = copy.deepcopy(node_lst)
         temp = []
         closest_node = 0
-        shortest_path = float('inf')
+        shortest_path = float("inf")
 
         for z in range(len(node_lst)):
             current_path_cost = 0
             i = z
             t = 0
             while t < len(node_lst):
-                shortest_dist = float('inf')
+                shortest_dist = float("inf")
                 if node_lst[i] != None:
                     for j in range(len(node_lst)):
                         if node_lst[j] == None or i == j:
                             continue
-                        curr_dist = self.shortest_path(node_lst[i],node_lst[j])[0]
+                        curr_dist = self.shortest_path(node_lst[i], node_lst[j])[0]
                         if curr_dist < shortest_dist:
                             closest_node = j
                             shortest_dist = curr_dist
 
                     if node_lst[i] != node_lst[closest_node]:
-                        to_closest_node = self.shortest_path(node_lst[i], node_lst[closest_node])[1]
-                        current_path_cost = current_path_cost + self.shortest_path(node_lst[i],node_lst[closest_node])[0]
+                        to_closest_node = self.shortest_path(
+                            node_lst[i], node_lst[closest_node]
+                        )[1]
+                        current_path_cost = (
+                            current_path_cost
+                            + self.shortest_path(node_lst[i], node_lst[closest_node])[0]
+                        )
                         node_lst[i] = None
                         ans.extend(to_closest_node)
                 i = closest_node
@@ -189,8 +197,8 @@ class GraphAlgo(GraphAlgoInterface):
                 shortest_path = current_path_cost
                 temp = copy.deepcopy(ans)
             ans = []
-        for i in range(len(temp)-2):
-            if temp[i] == temp[i+1]:
+        for i in range(len(temp) - 2):
+            if temp[i] == temp[i + 1]:
                 temp.pop(i)
 
-        return temp,shortest_path
+        return temp, shortest_path
