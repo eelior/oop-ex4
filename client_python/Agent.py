@@ -7,8 +7,10 @@ class Agent:
         self.value = value
         self.src = src
         self.dest = dest
+        self.lastDest = 0
         self.speed = speed
         self.pos = pos
+        self.orders = []
         self.avatar = pygame.image.load('client_python/ash_katchum.png')
 
         self.nextPositions = []

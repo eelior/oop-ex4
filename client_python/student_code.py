@@ -9,9 +9,11 @@ import json
 from pygame import gfxdraw
 import pygame
 from pygame import *
-
+import sys
+import time
 from Game import Game
 from GraphNode import GraphNode
+from Pokemon import Pokemon
 
 # init pygame
 WIDTH, HEIGHT = 1080, 720
@@ -36,7 +38,7 @@ client = Client()
 client.start_connection(HOST, PORT)
 
 clock10 = pygame.time.Clock() # TODO is it needed?
-# time_counter = time.time() # TODO is it needed?
+time_counter = time.time() # TODO is it needed?
 move_counter = 0
 
 FONT = pygame.font.SysFont("Arial", 20, bold=True)
@@ -104,39 +106,31 @@ def drawEdge(src: GraphNode, dest: GraphNode, color: Color):
     pygame.draw.line(screen, color, (src_x, src_y), (dest_x, dest_y))
 
 def giveAgentsOrders():
-    """
-    The function assigns each Agent the best Pokemon according to the following criteria:
-        1. The shortest path (in terms of weight)
-        2. Pokemon value
-
-    The function is Bijection: each Agent has one Pokemon adapted at each iteration and vice versa.
-    ** update agent.orderList with new path **
-    """
     for agent in game.agents:
-        if agent.src == agent.lastDest or len(agent.orderList) == 0:
+        if agent.src == agent.lastDest or len(agent.orders) == 0:
             v = -sys.maxsize
-            bestPok = Pokemon(0.0, 0, (0.0, 0.0, 0.0), 0)
-            for pok in game.pokemons:
-                if not pok.took:
-                    src1, dest1 = game.findEdge(pok.pos, pok.type)
+            chosenPokemon = Pokemon(0.0, 0, (0.0, 0.0, 0.0), 0)
+            for currPokemon in game.pokemons:
+                if not currPokemon.is_taken:
+                    src1, dest1 = game.findEdge(currPokemon.pos, currPokemon.type)
                     agent.lastDest = dest1.id
                     if agent.src == src1.id:
                         w, lst = game.shortest_path(src1.id, dest1.id)
                     elif agent.src == dest1.id:
                         lst = [src1.id, dest1.id]
-                        bestPok = pok
+                        chosenPokemon = currPokemon
                         agent.orderList = lst
                         break
                     else:
                         w, lst = game.threeShortestPath(agent.src, src1.id, dest1.id)
 
                     lst.pop(0)
-                    if (pok.value - w) > v:
-                        v = pok.value - w
-                        bestPok = pok
+                    if (currPokemon.value - w) > v:
+                        v = currPokemon.value - w
+                        chosenPokemon = currPokemon
                         agent.orderList = lst
 
-            bestPok.took = True
+            chosenPokemon.took = True
 
 
 # add agents

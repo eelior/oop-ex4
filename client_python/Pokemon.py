@@ -6,6 +6,7 @@ class Pokemon:
         self.value = value
         self.type = type
         self.pos = pos
+        self.is_taken = False
         self.avatar_pikachu = pygame.image.load('client_python/pikachu.png')
         self.avatar_bulbasaur = pygame.image.load('client_python/bulbasaur.png')
 
