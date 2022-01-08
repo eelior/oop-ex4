@@ -135,7 +135,7 @@ def giveAgentsOrders():
                     if (pokemon.value - w) > v:
                         v = pokemon.value - w
                         chosen_pokemon = pokemon
-                        agent.orders.extend(lst)
+                        agent.orders=lst
             chosen_pokemon.is_taken = True
         print(agent.orders)
     
