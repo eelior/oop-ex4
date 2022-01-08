@@ -198,11 +198,13 @@ while client.is_running() == "true":
     # draw agents
     for agent in game.agents:
         avatar = agent.avatar
-        rect = avatar.get_rect()
-        rect.center = (agent.pos[0], agent.pos[1])
+        text_rect = avatar.get_rect()
+        text_rect.center = (agent.pos[0] - 10, agent.pos[1] + 5)
         agentId = FONT.render(str(agent.id), True, black)
-        screen.blit(agentId, rect) # draw agent id
-        screen.blit(avatar, rect) # draw agent avatar
+        screen.blit(agentId, text_rect) # draw agent id
+        avatar_rect = avatar.get_rect()
+        avatar_rect.center = (agent.pos[0], agent.pos[1])
+        screen.blit(avatar, avatar_rect) # draw agent avatar
 
     # draw pokemons
     for currPokemon in game.pokemons:
@@ -210,11 +212,13 @@ while client.is_running() == "true":
             avatar = currPokemon.avatar_bulbasaur
         else:
             avatar = currPokemon.avatar_pikachu
-        rect = avatar.get_rect()
-        rect.center = (currPokemon.posScale[0], currPokemon.posScale[1])
+        text_rect = avatar.get_rect()
+        text_rect.center = (currPokemon.posScale[0] - 35, currPokemon.posScale[1] + 5)
         pokValue = FONT.render(str(currPokemon.value), True, black)
-        screen.blit(pokValue, rect) # draw pokemon value
-        screen.blit(avatar, rect) # draw pokemon avatar
+        screen.blit(pokValue, text_rect) # draw pokemon value
+        avatar_rect = avatar.get_rect()
+        avatar_rect.center = (currPokemon.posScale[0], currPokemon.posScale[1])
+        screen.blit(avatar, avatar_rect) # draw pokemon avatar
 
     # update screen changes
     display.update()
