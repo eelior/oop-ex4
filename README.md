@@ -17,7 +17,7 @@ In this assignment, we were asked to “put into practice” the main tools cove
 <br/>
 
 ### Video
-<img src="https://i.ibb.co/Nnsf6kx/showcase-video.gif" alt="logo">
+<img src="https://media4.giphy.com/media/DRpcVv0ox0tuu8ps39/giphy.gif?cid=790b761172b47360ec657102da352e262b8f055ad90f786a&rid=giphy.gif&ct=g" alt="logo">
 
 
 <br/>
