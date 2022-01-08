@@ -11,9 +11,9 @@ import pygame
 from pygame import *
 import sys
 import time
-from Game import Game
-from GraphNode import GraphNode
-from Pokemon import Pokemon
+from game.Game import Game
+from graph.GraphNode import GraphNode
+from game.Pokemon import Pokemon
 
 # init pygame
 WIDTH, HEIGHT = 1080, 720
@@ -25,9 +25,9 @@ HOST = "127.0.0.1"
 
 pygame.init()
 try:
-    bg = pygame.image.load("sprites/background.jpeg")
+    bg = pygame.image.load("../game/sprites/background.jpeg")
 except:
-    bg = pygame.image.load("client_python/sprites/background.jpeg")
+    bg = pygame.image.load("game/sprites/background.jpeg")
 screen = display.set_mode(
     (WIDTH, HEIGHT), depth=32, flags=HWSURFACE | DOUBLEBUF | RESIZABLE
 )

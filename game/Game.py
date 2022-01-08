@@ -2,9 +2,10 @@ import json
 
 from numpy import sqrt
 
-from GraphAlgo import GraphAlgo
-from Agent import Agent
-from Pokemon import Pokemon
+from game.Agent import Agent
+from game.Pokemon import Pokemon
+from graph.GraphAlgo import GraphAlgo
+
 import sys
 
 

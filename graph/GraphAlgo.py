@@ -3,12 +3,14 @@ import json
 import re
 from typing import List
 
-from DiGraph import DiGraph
-from GraphAlgoInterface import GraphAlgoInterface
-from PriorityQueue import PriorityQueue, NodeVal
+
 import pygame
 from pygame.locals import *
-from GraphInterface import GraphInterface
+
+from graph.DiGraph import DiGraph
+from graph.GraphAlgoInterface import GraphAlgoInterface
+from graph.GraphInterface import GraphInterface
+from graph.PriorityQueue import PriorityQueue, NodeVal
 
 INF = 20000000
 

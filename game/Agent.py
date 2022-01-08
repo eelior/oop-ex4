@@ -12,9 +12,9 @@ class Agent:
         self.pos = pos
         self.orders = []
         try:
-            self.avatar = pygame.image.load('client_python/sprites/ash_katchum.png')
+            self.avatar = pygame.image.load('game/sprites/ash_katchum.png')
         except:
-            self.avatar = pygame.image.load('sprites/ash_katchum.png')
+            self.avatar = pygame.image.load('../game/sprites/ash_katchum.png')
 
         self.nextPositions = []
 
