@@ -42,6 +42,9 @@ time_counter = time.time() # TODO is it needed?
 move_counter = 0
 
 FONT = pygame.font.SysFont("Arial", 20, bold=True)
+radius = 5
+black = Color(0, 0, 0)
+white = Color(255, 255, 255)
 
 game = Game(client.get_info())
 graph = game.graphAlgo.graph
@@ -85,8 +88,7 @@ def my_scale(data, x=False, y=False):
     if y:
         return scale(data, 50, screen.get_height() - 50, min_y, max_y)
 
-radius = 15
-black = Color(0, 0, 0)
+
 
 def drawNode(n1: GraphNode):
     x = my_scale(float(n1.pos[0]), x=True)
@@ -107,6 +109,7 @@ def drawEdge(src: GraphNode, dest: GraphNode, color: Color):
 
 def giveAgentsOrders():
     for agent in game.agents:
+
         if agent.src == agent.lastDest or len(agent.orders) == 0:
             v = -sys.maxsize
             chosenPokemon = Pokemon(0.0, 0, (0.0, 0.0, 0.0), 0)
@@ -181,8 +184,12 @@ while client.is_running() == "true":
     #                 pygame.quit()
     #                 exit(0)
 
+
+
     # refresh surface
-    screen.fill(Color(0, 0, 0))
+    screen.fill(white)
+    screen.blit(bg, (0, 0))
+
 
     # draw nodes
     for currNode in graph.Nodes.values():
@@ -197,9 +204,8 @@ while client.is_running() == "true":
         rect = avatar.get_rect()
         rect.center = (agent.pos[0], agent.pos[1])
         agentId = FONT.render(str(agent.id), True, black)
-        # rect = id_srf.get_rect(topright=(x - 10, y - 10))
-        screen.blit(avatar, rect)
-        screen.blit(agentId, rect)
+        screen.blit(avatar, rect) # draw agent avatar
+        screen.blit(agentId, rect) # draw agent id
 
     # draw pokemons
     for currPokemon in game.pokemons:
@@ -209,9 +215,9 @@ while client.is_running() == "true":
             avatar = currPokemon.avatar_pikachu
         rect = avatar.get_rect()
         rect.center = (currPokemon.posScale[0], currPokemon.posScale[1])
-        pokVal = FONT.render(str(currPokemon.value), True, black)
-        screen.blit(avatar, rect)
-        screen.blit(pokVal, rect)
+        pokValue = FONT.render(str(currPokemon.value), True, black)
+        screen.blit(avatar, rect) # draw pokemon avatar
+        screen.blit(pokValue, rect) # draw pokemon vakue
 
     # update screen changes
     display.update()
