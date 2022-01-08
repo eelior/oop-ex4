@@ -114,31 +114,31 @@ def giveAgentsOrders():
     for agent in game.agents:
         if agent.src == agent.lastDest or len(agent.orders) == 0:
             v = -sys.maxsize # fetching the maximum value
-            chosen_pokemon = Pokemon(0.0, 0, (0.0, 0.0, 0.0), 0)
+            chosen_pokemon = Pokemon(0.0, 0, (0.0, 0.0, 0.0))
             for pokemon in game.pokemons:
                 if not pokemon.is_taken:
                     src1, dest1 = game.find_poke_location(pokemon)
-                    print(src1, dest1)
-                    agent.lastDest = dest1.id
-                    if agent.src == src1.id:
-                        w, lst = game.graphAlgo.shortest_path(src1.id, dest1.id)
-                    elif agent.src == dest1.id:
-                        lst = [src1.id, dest1.id]
+                    agent.lastDest = dest1
+                    if agent.src == src1:
+                        w, lst = game.graphAlgo.shortest_path(src1, dest1)
+                    elif agent.src == dest1:
+                        lst = [src1, dest1]
                         chosen_pokemon = pokemon
-                        agent.orderList = lst
+                        agent.orders = lst
                         break
                     else:
-                        w, lst = game.graphAlgo.shortest_path(agent.src, src1.id)
-                        w = w + game.graphAlgo.shortest_path(src1.id, dest1.id)[0]
-                        lst.append(game.graphAlgo.shortest_path(src1, dest1.id)[1])
+                        w, lst = game.graphAlgo.shortest_path(agent.src, src1)
+                        w = w + game.graphAlgo.shortest_path(src1, dest1)[0]
+                        lst.extend(game.graphAlgo.shortest_path(src1, dest1)[1])
 
                     lst.pop(0)
                     if (pokemon.value - w) > v:
                         v = pokemon.value - w
                         chosen_pokemon = pokemon
-                        agent.orderList = lst
-
-            chosen_pokemon.took = True
+                        agent.orders.extend(lst)
+            chosen_pokemon.is_taken = True
+        print(agent.orders)
+    
 
 
 # add agents
@@ -209,7 +209,7 @@ while client.is_running() == "true":
         rect.center = (currPokemon.posScale[0], currPokemon.posScale[1])
         pokValue = FONT.render(str(currPokemon.value), True, black)
         screen.blit(avatar, rect) # draw pokemon avatar
-        screen.blit(pokValue, rect) # draw pokemon vakue
+        screen.blit(pokValue, rect) # draw pokemon value
 
     # update screen changes
     display.update()
@@ -223,7 +223,8 @@ while client.is_running() == "true":
     for agent in game.agents:
         if agent.dest == -1:
             # print(agent.orders)
-            next_node = (agent.src - 1) % len(graph.Nodes)
+
+            next_node = agent.orders.pop(0)
             client.choose_next_edge(
                 '{"agent_id":'
                 + str(agent.id)

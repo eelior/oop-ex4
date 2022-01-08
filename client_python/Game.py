@@ -78,7 +78,8 @@ class Game:
             pokemon = currPokemon['Pokemon']
             pos_tuple = pokemon['pos'].split(',')
             poke_pos = (float(pos_tuple[0]), float(pos_tuple[1]), float(pos_tuple[2]))
-            new_pokemon = Pokemon(pokemon['value'], pokemon['type'], poke_pos, ++self.size)
+            new_pokemon = Pokemon(pokemon['value'], pokemon['type'], poke_pos)
+            self.size += 1
             temp_pokemons.append(new_pokemon)
         self.pokemons = temp_pokemons
 
