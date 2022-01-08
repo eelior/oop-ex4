@@ -24,7 +24,10 @@ PORT = 6666
 HOST = "127.0.0.1"
 
 pygame.init()
-bg = pygame.image.load("sprites/background.jpeg")
+try:
+    bg = pygame.image.load("sprites/background.jpeg")
+except:
+    bg = pygame.image.load("python_client/sprites/background.jpeg")
 screen = display.set_mode(
     (WIDTH, HEIGHT), depth=32, flags=HWSURFACE | DOUBLEBUF | RESIZABLE
 )
