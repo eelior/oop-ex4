@@ -118,6 +118,7 @@ def giveAgentsOrders():
             for pokemon in game.pokemons:
                 if not pokemon.is_taken:
                     src1, dest1 = game.find_poke_location(pokemon)
+                    print(src1, dest1)
                     agent.lastDest = dest1.id
                     if agent.src == src1.id:
                         w, lst = game.graphAlgo.shortest_path(src1.id, dest1.id)
@@ -216,9 +217,7 @@ while client.is_running() == "true":
     # refresh rate
     clock.tick(60)
 
-    # giveAgentsOrders()
-    # print(game.find_poke_location(game.pokemons[0]))
-    # [Refactor] choose next edge - go to next order
+    giveAgentsOrders()
 
     flag = True
     for agent in game.agents:

@@ -48,6 +48,9 @@ class Game:
         self.graphAlgo = GraphAlgo()
         self.graphAlgo.load_from_json(load_game['graph'])
 
+        self.size = self.graphAlgo.graph.v_size()
+
+
     def load_agents(self, agents_info: str):
         """load agents info to Game"""
         agents_load = json.loads(agents_info)
@@ -68,11 +71,14 @@ class Game:
         pokemon_load = json.loads(pokemon_info)
 
         list_of_pokemon = pokemon_load['Pokemons']
+        self.pokemons.clear()
+
         temp_pokemons = []
-        for poke in list_of_pokemon:
-            pos_tuple = poke['Pokemon']['pos'].split(',')
+        for currPokemon in list_of_pokemon:
+            pokemon = currPokemon['Pokemon']
+            pos_tuple = pokemon['pos'].split(',')
             poke_pos = (float(pos_tuple[0]), float(pos_tuple[1]), float(pos_tuple[2]))
-            new_pokemon = Pokemon(poke['Pokemon']['value'], poke['Pokemon']['type'], poke_pos)
+            new_pokemon = Pokemon(pokemon['value'], pokemon['type'], poke_pos, ++self.size)
             temp_pokemons.append(new_pokemon)
         self.pokemons = temp_pokemons
 
@@ -80,7 +86,6 @@ class Game:
         """returns the src and dest of the edge where the pokemon resides"""
         poke_x = pokemon.pos[0]
         poke_y = pokemon.pos[1]
-        print(pokemon)
         for src in self.graphAlgo.graph.src_dst.keys():
             for dst in self.graphAlgo.graph.src_dst.get(src).keys():
                 src_x = self.graphAlgo.graph.Nodes.get(src).pos[0]

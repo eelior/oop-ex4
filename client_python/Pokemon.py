@@ -2,22 +2,22 @@ import pygame
 
 
 class Pokemon:
-    def __init__(self, value: float, type: int, pos: tuple):
+    def __init__(self, value: float, type: int, pos: tuple, id: int):
         self.value = value
         self.type = type
         self.pos = pos
+        self.id = id
         self.is_taken = False
         try:
             self.avatar_pikachu = pygame.image.load('client_python/sprites/pikachu.png')
             self.avatar_bulbasaur = pygame.image.load('client_python/sprites/bulbasaur.png')
         except:
-            print("Loaded sprites")
             self.avatar_pikachu = pygame.image.load('sprites/pikachu.png')
             self.avatar_bulbasaur = pygame.image.load('sprites/bulbasaur.png')
 
 
     def __str__(self):
-        return f'[value={self.value},type={self.type},pos={self.pos}]'
+        return f'[value={self.value},type={self.type},pos={self.pos},id={self.id}]'
 
     def __repr__(self):
-        return f'[value={self.value},type={self.type},pos={self.pos}]'
+        return f'[value={self.value},type={self.type},pos={self.pos},id={self.id}]'
