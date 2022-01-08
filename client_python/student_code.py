@@ -24,7 +24,7 @@ PORT = 6666
 HOST = "127.0.0.1"
 
 pygame.init()
-bg = pygame.image.load("client_python/background.jpeg")
+bg = pygame.image.load("background.jpeg")
 screen = display.set_mode(
     (WIDTH, HEIGHT), depth=32, flags=HWSURFACE | DOUBLEBUF | RESIZABLE
 )
@@ -188,7 +188,6 @@ while client.is_running() == "true":
     for currNode in graph.Nodes.values():
         drawNode(currNode)
         for currEdge in graph.all_out_edges_of_node(currNode.id):
-            print(currNode)
             dest = graph.Nodes.get(currEdge)
             drawEdge(currNode, dest, black)
 
@@ -243,6 +242,7 @@ while client.is_running() == "true":
             )
             ttl = client.time_to_end()
             print(ttl, client.get_info())
+            print(game.find_poke_location(game.pokemons[0]))
 
     client.move()
 # game over:

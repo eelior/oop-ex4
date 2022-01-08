@@ -11,7 +11,7 @@ class Agent:
         self.speed = speed
         self.pos = pos
         self.orders = []
-        self.avatar = pygame.image.load('client_python/ash_katchum.png')
+        self.avatar = pygame.image.load('ash_katchum.png')
 
         self.nextPositions = []
 
