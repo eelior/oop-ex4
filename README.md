@@ -17,7 +17,7 @@ In this assignment, we were asked to “put into practice” the main tools cove
 <br/>
 
 ### Video
-<img src="https://media4.giphy.com/media/DRpcVv0ox0tuu8ps39/giphy.gif?cid=790b761172b47360ec657102da352e262b8f055ad90f786a&rid=giphy.gif&ct=g" alt="logo">
+![poke](https://user-images.githubusercontent.com/74679553/148662018-f1c857a9-c16a-4f87-90ea-88365f4a5b37.gif)
 
 
 <br/>
@@ -29,15 +29,18 @@ In this assignment, we were asked to “put into practice” the main tools cove
 
 <br/>
 
-## How it works:
+## Pokemon assignment:
 
-Somewhat similar to the elevators problem, we give each agent his next orders.
+Every iteration we call the function give_new_orders().
 
-So, for each agent in agents we find the next pokemon with the shortest path to and that no other agent is after, and we add it to the list of pokemons to be grabbed.
+The function will iterate over each agent, and assign it the closest pokemon using find_closest_pokemon() function, which returns the edge which the pokemon resides on.
 
-To implement this, we use a priority queue, which is a data structure that allows us to find the next pokemon with the shortest path to and that no other agent is after. 
+Every time we assign a pokemon for an agent, we mark it as "taken", so that every iteration of give_new_orders() will not assign the same pokemon to two different agents.
 
-For this solution we used our implementation from our previous assignment to shortest path algorithm.
+Next, we will use the client function choose_next_edge() and we will assign every agent the pokemon which is closest to.
+
+After we finish iterating over all the agents, we will call the function Move().
+
 
 <br/>
 
