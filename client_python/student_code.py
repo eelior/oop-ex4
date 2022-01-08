@@ -40,8 +40,8 @@ pygame.font.init()
 client = Client()
 client.start_connection(HOST, PORT)
 
-clock10 = pygame.time.Clock() # TODO is it needed?
-time_counter = time.time() # TODO is it needed?
+clock10 = pygame.time.Clock()  # TODO is it needed?
+time_counter = time.time()  # TODO is it needed?
 move_counter = 0
 
 FONT = pygame.font.SysFont("Arial", 20, bold=True)
@@ -49,7 +49,7 @@ radius = 5
 
 # Colors
 black = Color(0, 0, 0)
-grey = Color(105,105,105)
+grey = Color(105, 105, 105)
 white = Color(255, 255, 255)
 green = Color(81, 255, 13)
 yellow = Color(255, 255, 102)
@@ -88,13 +88,12 @@ def my_scale(data, x=False, y=False):
         return scale(data, 50, screen.get_height() - 50, min_y, max_y)
 
 
-
 def drawNode(n1: GraphNode):
     x = my_scale(float(n1.pos[0]), x=True)
     y = my_scale(float(n1.pos[1]), y=True)
     gfxdraw.filled_circle(screen, int(x), int(y), radius, green)
     gfxdraw.aacircle(screen, int(x), int(y), radius, yellow)
-    id_srf = FONT.render(str(n1.id), True, black) # n1 = currNode
+    id_srf = FONT.render(str(n1.id), True, black)  # n1 = currNode
     rect = id_srf.get_rect(topright=(x - 10, y - 10))
     screen.blit(id_srf, rect)
 
@@ -106,19 +105,20 @@ def drawEdge(src: GraphNode, dest: GraphNode, color: Color):
     dest_y = my_scale(dest.pos[1], y=True)
     pygame.draw.line(screen, color, (src_x, src_y), (dest_x, dest_y), 3)
 
+
 def giveAgentsOrders():
-    '''
-        # give each agent his next orders
-            # for agent in agents:
-            #    foundPokemon = pokemon[0]
-            #    for pokemon in pokemons:
-            #       foundPokemon = find nearest pokemon && available
-            #    agent.nextOrders = foundPokemon
-    '''
+    """
+    # give each agent his next orders
+        # for agent in agents:
+        #    foundPokemon = pokemon[0]
+        #    for pokemon in pokemons:
+        #       foundPokemon = find nearest pokemon && available
+        #    agent.nextOrders = foundPokemon
+    """
 
     for agent in game.agents:
         if agent.src == agent.lastDest or len(agent.orders) == 0:
-            v = -sys.maxsize # fetching the maximum value
+            v = -sys.maxsize  # fetching the maximum value
             chosen_pokemon = Pokemon(0.0, 0, (0.0, 0.0, 0.0))
             for pokemon in game.pokemons:
                 if not pokemon.is_taken:
@@ -140,10 +140,9 @@ def giveAgentsOrders():
                     if (pokemon.value - w) > v:
                         v = pokemon.value - w
                         chosen_pokemon = pokemon
-                        agent.orders=lst
+                        agent.orders = lst
             chosen_pokemon.is_taken = True
         # print(agent.orders)
-    
 
 
 # add agents
@@ -158,7 +157,9 @@ for i in range(game.num_of_agents):
 client.start()
 
 while client.is_running() == "true":
-    inf = json.loads(client.get_info(), object_hook=lambda d: SimpleNamespace(**d)).GameServer
+    inf = json.loads(
+        client.get_info(), object_hook=lambda d: SimpleNamespace(**d)
+    ).GameServer
     time_delta = clock.tick(60) / 1000.0
 
     # pokemons
@@ -187,7 +188,6 @@ while client.is_running() == "true":
     screen.fill(white)
     screen.blit(bg, (0, 0))
 
-
     # draw nodes
     for currNode in graph.Nodes.values():
         drawNode(currNode)
@@ -201,24 +201,24 @@ while client.is_running() == "true":
         text_rect = avatar.get_rect()
         text_rect.center = (agent.pos[0] - 10, agent.pos[1] + 5)
         agentId = FONT.render(str(agent.id), True, black)
-        screen.blit(agentId, text_rect) # draw agent id
+        screen.blit(agentId, text_rect)  # draw agent id
         avatar_rect = avatar.get_rect()
         avatar_rect.center = (agent.pos[0], agent.pos[1])
-        screen.blit(avatar, avatar_rect) # draw agent avatar
+        screen.blit(avatar, avatar_rect)  # draw agent avatar
 
     # draw pokemons
     for currPokemon in game.pokemons:
         if currPokemon.type > 0:
             avatar = currPokemon.avatar_bulbasaur
         else:
-            avatar = currPokemon.avatar_pikachu
+            avatar = currPokemon.avatar_charmander
         text_rect = avatar.get_rect()
         text_rect.center = (currPokemon.posScale[0] - 35, currPokemon.posScale[1] + 5)
         pokValue = FONT.render(str(currPokemon.value), True, black)
-        screen.blit(pokValue, text_rect) # draw pokemon value
+        screen.blit(pokValue, text_rect)  # draw pokemon value
         avatar_rect = avatar.get_rect()
         avatar_rect.center = (currPokemon.posScale[0], currPokemon.posScale[1])
-        screen.blit(avatar, avatar_rect) # draw pokemon avatar
+        screen.blit(avatar, avatar_rect)  # draw pokemon avatar
 
     # update screen changes
     display.update()
