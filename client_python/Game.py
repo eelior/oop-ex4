@@ -9,7 +9,7 @@ import sys
 
 
 def distance(src_x, src_y, dst_x, dst_y):
-    return sqrt((src_x - dst_x)**2 + (src_y - dst_y)**2)
+    return sqrt((src_x - dst_x) ** 2 + (src_y - dst_y) ** 2)
 
 
 class Game:
@@ -89,8 +89,9 @@ class Game:
                 dst_x = self.graphAlgo.graph.Nodes.get(dst).pos[0]
                 dst_y = self.graphAlgo.graph.Nodes.get(dst).pos[1]
 
+                if abs(distance(src_x, src_y, poke_x, poke_y) + distance(poke_x, poke_y, dst_x, dst_y)
+                       - distance(src_x, src_y, dst_x, dst_y)) < sys.float_info.epsilon:
+                    if pokemon.type < 0:
+                        return dst, src
 
-                if abs(distance(src_x,src_y,poke_x,poke_y) + distance(poke_x,poke_y,dst_x,dst_y)
-                       - distance(src_x,src_y,dst_x,dst_y))<sys.float_info.epsilon:
                     return src, dst
-
