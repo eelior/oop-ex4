@@ -49,13 +49,6 @@ white = Color(255, 255, 255)
 game = Game(client.get_info())
 graph = game.graphAlgo.graph
 
-# manager = pygame_gui.UIManager((WIDTH, HEIGHT))
-# btnStop = pygame_gui.elements.UIButton(
-#     relative_rect=pygame.Rect((screen.get_width() - 100, 0), (115, 40)),
-#     text="STOP GAME",
-#     manager=manager,
-# )
-
 # get data proportions
 min_x_id = min(list(graph.Nodes), key=lambda n: graph.Nodes[n].pos[0])
 min_y_id = min(list(graph.Nodes), key=lambda n: graph.Nodes[n].pos[1])
@@ -80,8 +73,6 @@ def scale(data, min_screen, max_screen, min_data, max_data):
 
 
 # decorate scale with the correct values
-
-
 def my_scale(data, x=False, y=False):
     if x:
         return scale(data, 50, screen.get_width() - 50, min_x, max_x)
@@ -108,29 +99,37 @@ def drawEdge(src: GraphNode, dest: GraphNode, color: Color):
     pygame.draw.line(screen, color, (src_x, src_y), (dest_x, dest_y))
 
 def giveAgentsOrders():
-    for agent in game.agents:
+    '''
+        # give each agent his next orders
+            # for agent in agents:
+            #    foundPokemon = pokemon[0]
+            #    for pokemon in pokemons:
+            #       foundPokemon = find nearest pokemon && available
+            #    agent.nextOrders = foundPokemon
+    '''
 
+    for agent in game.agents:
         if agent.src == agent.lastDest or len(agent.orders) == 0:
-            v = -sys.maxsize
+            v = -sys.maxsize # fetching the maximum value
             chosenPokemon = Pokemon(0.0, 0, (0.0, 0.0, 0.0), 0)
-            for currPokemon in game.pokemons:
-                if not currPokemon.is_taken:
-                    src1, dest1 = game.findEdge(currPokemon.pos, currPokemon.type)
+            for pokemon in game.pokemons:
+                if not pokemon.is_taken:
+                    src1, dest1 = game.findEdge(pokemon.pos, pokemon.type)
                     agent.lastDest = dest1.id
                     if agent.src == src1.id:
                         w, lst = game.shortest_path(src1.id, dest1.id)
                     elif agent.src == dest1.id:
                         lst = [src1.id, dest1.id]
-                        chosenPokemon = currPokemon
+                        chosenPokemon = pokemon
                         agent.orderList = lst
                         break
                     else:
                         w, lst = game.threeShortestPath(agent.src, src1.id, dest1.id)
 
                     lst.pop(0)
-                    if (currPokemon.value - w) > v:
-                        v = currPokemon.value - w
-                        chosenPokemon = currPokemon
+                    if (pokemon.value - w) > v:
+                        v = pokemon.value - w
+                        chosenPokemon = pokemon
                         agent.orderList = lst
 
             chosenPokemon.took = True
@@ -173,19 +172,6 @@ while client.is_running() == "true":
             pygame.quit()
             exit(0)
 
-    # check events
-    # for event in pygame.event.get():
-    #     if event.type == pygame.QUIT:
-    #         pygame.quit()
-    #         exit(0)
-    #     if event.type == pygame.USEREVENT:
-    #         if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-    #             if event.ui_element == btnStop:
-    #                 pygame.quit()
-    #                 exit(0)
-
-
-
     # refresh surface
     screen.fill(white)
     screen.blit(bg, (0, 0))
@@ -224,14 +210,6 @@ while client.is_running() == "true":
 
     # refresh rate
     clock.tick(60)
-
-    # give each agent his next orders
-    # def giveAgentsOrders():
-        # for agent in agents:
-        #    foundPokemon = pokemon[0]
-        #    for pokemon in pokimons:
-        #       foundPokemon = find nearest pokemon && available
-        #    agent.nextOrders = foundPokemon
 
     # giveAgentsOrders()
     print(game.find_poke_location(game.pokemons[0]))
