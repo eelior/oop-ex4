@@ -214,11 +214,13 @@ while client.is_running() == "true":
     clock.tick(60)
 
     # giveAgentsOrders()
-    print(game.find_poke_location(game.pokemons[0]))
+    # print(game.find_poke_location(game.pokemons[0]))
     # [Refactor] choose next edge - go to next order
+
+    flag = True
     for agent in game.agents:
         if agent.dest == -1:
-
+            # print(agent.orders)
             next_node = (agent.src - 1) % len(graph.Nodes)
             client.choose_next_edge(
                 '{"agent_id":'
@@ -228,10 +230,11 @@ while client.is_running() == "true":
                 + "}"
             )
             ttl = client.time_to_end()
-            print(ttl, client.get_info())
+            # print(ttl, client.get_info())
 
 
-    client.move()
+    if inf.moves / (time.time() - time_counter) < 10 and flag:
+        client.move()
 # game over:
 
 
