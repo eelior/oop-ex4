@@ -137,7 +137,7 @@ def giveAgentsOrders():
                         chosen_pokemon = pokemon
                         agent.orders=lst
             chosen_pokemon.is_taken = True
-        print(agent.orders)
+        # print(agent.orders)
     
 
 
@@ -222,8 +222,6 @@ while client.is_running() == "true":
     flag = True
     for agent in game.agents:
         if agent.dest == -1:
-            # print(agent.orders)
-
             next_node = agent.orders.pop(0)
             client.choose_next_edge(
                 '{"agent_id":'
@@ -232,59 +230,6 @@ while client.is_running() == "true":
                 + str(next_node)
                 + "}"
             )
-            ttl = client.time_to_end()
-            # print(ttl, client.get_info())
-
     if inf.moves / (time.time() - time_counter) < 10 and flag:
         client.move()
-        game.num_of_moves = game.num_of_moves+1
 # game over:
-
-
-
-
-# ===LEFTOVERS===
-    # # draw edges
-    # for src in graph.src_dst.keys():
-    #     for dest in graph.src_dst[src].keys():
-    #         # scaled positions
-    #         src_x = my_scale(graph.Nodes[src].pos[0], x=True)
-    #         src_y = my_scale(graph.Nodes[src].pos[1], y=True)
-    #         dest_x = my_scale(graph.Nodes[dest].pos[0], x=True)
-    #         dest_y = my_scale(graph.Nodes[dest].pos[1], y=True)
-
-    #         # draw the line
-    #         pygame.draw.line(
-    #             screen, Color(61, 72, 126), (src_x, src_y), (dest_x, dest_y)
-    #         )
-
-    # # draw agents
-    # for agent in agents:
-    #     pygame.draw.circle(
-    #         screen, Color(122, 61, 23), (int(agent.pos.x), int(agent.pos.y)), 10
-    #     )
-    # draw pokemons (note: should differ (GUI wise) between the up and the down pokemons (currently they are marked in the same way).
-    # for p in pokemons:
-    #     pygame.draw.circle(screen, Color(0, 255, 255), (int(p.pos.x), int(p.pos.y)), 10)
-
-
-
-    # pokemons = json.loads(
-    #     client.get_pokemons(), object_hook=lambda d: SimpleNamespace(**d)
-    # ).Pokemons
-    # pokemons = [p.Pokemon for p in pokemons]
-    # for p in pokemons:
-    #     x, y, _ = p.pos.split(",")
-    #     p.pos = SimpleNamespace(
-    #         x=my_scale(float(x), x=True), y=my_scale(float(y), y=True)
-    #     )
-    # agents = json.loads(
-    #     client.get_agents(), object_hook=lambda d: SimpleNamespace(**d)
-    # ).Agents
-
-    # agents = [agent.Agent for agent in agents]
-    # for a in agents:
-    #     x, y, _ = a.pos.split(",")
-    #     a.pos = SimpleNamespace(
-    #         x=my_scale(float(x), x=True), y=my_scale(float(y), y=True)
-        # )
