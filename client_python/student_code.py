@@ -235,9 +235,9 @@ while client.is_running() == "true":
             ttl = client.time_to_end()
             # print(ttl, client.get_info())
 
-
     if inf.moves / (time.time() - time_counter) < 10 and flag:
         client.move()
+        game.num_of_moves = game.num_of_moves+1
 # game over:
 
 
