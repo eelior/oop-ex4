@@ -111,28 +111,30 @@ def giveAgentsOrders():
     for agent in game.agents:
         if agent.src == agent.lastDest or len(agent.orders) == 0:
             v = -sys.maxsize # fetching the maximum value
-            chosenPokemon = Pokemon(0.0, 0, (0.0, 0.0, 0.0), 0)
+            chosen_pokemon = Pokemon(0.0, 0, (0.0, 0.0, 0.0), 0)
             for pokemon in game.pokemons:
                 if not pokemon.is_taken:
-                    src1, dest1 = game.findEdge(pokemon.pos, pokemon.type)
+                    src1, dest1 = game.find_poke_location(pokemon)
                     agent.lastDest = dest1.id
                     if agent.src == src1.id:
-                        w, lst = game.shortest_path(src1.id, dest1.id)
+                        w, lst = game.graphAlgo.shortest_path(src1.id, dest1.id)
                     elif agent.src == dest1.id:
                         lst = [src1.id, dest1.id]
-                        chosenPokemon = pokemon
+                        chosen_pokemon = pokemon
                         agent.orderList = lst
                         break
                     else:
-                        w, lst = game.threeShortestPath(agent.src, src1.id, dest1.id)
+                        w, lst = game.graphAlgo.shortest_path(agent.src, src1.id)
+                        w = w + game.graphAlgo.shortest_path(src1.id, dest1.id)[0]
+                        lst.append(game.graphAlgo.shortest_path(src1, dest1.id)[1])
 
                     lst.pop(0)
                     if (pokemon.value - w) > v:
                         v = pokemon.value - w
-                        chosenPokemon = pokemon
+                        chosen_pokemon = pokemon
                         agent.orderList = lst
 
-            chosenPokemon.took = True
+            chosen_pokemon.took = True
 
 
 # add agents
