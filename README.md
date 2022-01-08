@@ -11,7 +11,14 @@ In this assignment, we were asked to “put into practice” the main tools cove
 <br/>
 
 ## Game Showcase:
+### Image
 <img src="client_python/sprites/showcase.png" alt="logo">
+
+<br/>
+
+### Video
+<img src="client_python/sprites/showcase.png" alt="logo">
+
 
 <br/>
 
@@ -22,6 +29,18 @@ In this assignment, we were asked to “put into practice” the main tools cove
 
 <br/>
 
+## How it works:
+
+Somewhat similar to the elevators problem, we give each agent his next orders.
+
+So, for each agent in agents we find the next pokemon with the shortest path to and that no other agent is after, and we add it to the list of pokemons to be grabbed.
+
+To implement this, we use a priority queue, which is a data structure that allows us to find the next pokemon with the shortest path to and that no other agent is after. 
+
+For this solution we used our implementation from our previous assignment to shortest path algorithm.
+
+<br/>
+
 ## Authors:
-- Elior Buskila @eelior
-- Itamar Casspi @itamarcasspi
+- Elior Buskila (@eelior)
+- Itamar Casspi (@itamarcasspi)

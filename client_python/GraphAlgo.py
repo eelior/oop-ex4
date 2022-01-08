@@ -89,8 +89,6 @@ class GraphAlgo(GraphAlgoInterface):
             return False
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        # if self.graph.Nodes.get(id1) is None or self.graph.Nodes.get(id1) is None:
-        #     return None
         dist = [0 for i in range(self.graph.v_size())]
         prev = [0 for i in range(self.graph.v_size())]
 
