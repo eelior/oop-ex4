@@ -40,11 +40,12 @@ pygame.font.init()
 client = Client()
 client.start_connection(HOST, PORT)
 
-clock10 = pygame.time.Clock()  # TODO is it needed?
-time_counter = time.time()  # TODO is it needed?
+clock10 = pygame.time.Clock()
+time_counter = time.time()
 move_counter = 0
 
 FONT = pygame.font.SysFont("Arial", 20, bold=True)
+
 radius = 5
 
 # Colors
@@ -106,43 +107,6 @@ def drawEdge(src: GraphNode, dest: GraphNode, color: Color):
     pygame.draw.line(screen, color, (src_x, src_y), (dest_x, dest_y), 3)
 
 
-def giveAgentsOrders():
-    """
-    # give each agent his next orders
-        # for agent in agents:
-        #    foundPokemon = pokemon[0]
-        #    for pokemon in pokemons:
-        #       foundPokemon = find nearest pokemon && available
-        #    agent.nextOrders = foundPokemon
-    """
-
-    for agent in game.agents:
-        if agent.src == agent.lastDest or len(agent.orders) == 0:
-            v = -sys.maxsize  # fetching the maximum value
-            chosen_pokemon = Pokemon(0.0, 0, (0.0, 0.0, 0.0))
-            for pokemon in game.pokemons:
-                if not pokemon.is_taken:
-                    src1, dest1 = game.find_poke_location(pokemon)
-                    agent.lastDest = dest1
-                    if agent.src == src1:
-                        w, lst = game.graphAlgo.shortest_path(src1, dest1)
-                    elif agent.src == dest1:
-                        lst = [src1, dest1]
-                        chosen_pokemon = pokemon
-                        agent.orders = lst
-                        break
-                    else:
-                        w, lst = game.graphAlgo.shortest_path(agent.src, src1)
-                        w = w + game.graphAlgo.shortest_path(src1, dest1)[0]
-                        lst.extend(game.graphAlgo.shortest_path(src1, dest1)[1])
-
-                    lst.pop(0)
-                    if (pokemon.value - w) > v:
-                        v = pokemon.value - w
-                        chosen_pokemon = pokemon
-                        agent.orders = lst
-            chosen_pokemon.is_taken = True
-        # print(agent.orders)
 
 
 # add agents
@@ -155,13 +119,15 @@ for i in range(game.num_of_agents):
 
 # this commnad starts the server - the game is running now
 client.start()
-
+original_width, original_height = screen.get_width(), screen.get_height()
 while client.is_running() == "true":
     inf = json.loads(
         client.get_info(), object_hook=lambda d: SimpleNamespace(**d)
     ).GameServer
-    time_delta = clock.tick(60) / 1000.0
 
+
+
+    # time_delta = clock.tick(60) / 1000.0
     # pokemons
     game.load_pokemon(client.get_pokemons())
     for pokemon in game.pokemons:
@@ -220,25 +186,25 @@ while client.is_running() == "true":
         avatar_rect.center = (currPokemon.posScale[0], currPokemon.posScale[1])
         screen.blit(avatar, avatar_rect)  # draw pokemon avatar
 
+    scale_x = float(screen.get_width()) / original_width
+    scale_y = float(screen.get_height()) / original_height
+    UI_FONT = pygame.font.SysFont("Arial", int(30*screen.get_height()/original_height), bold=True)
+
+
+    info = json.loads(client.get_info())
+    timer_clock = UI_FONT.render("Time left:" + client.time_to_end(), True, yellow)
+    grade_score = UI_FONT.render("Grade: "+str(info['GameServer']['grade']), True, yellow)
+    move_counter = UI_FONT.render("Moves: "+str(info['GameServer']['moves']),True, yellow)
+    screen.blit(move_counter,(int(450* scale_x),0))
+    screen.blit(grade_score,(int(250* scale_x),0))
+    screen.blit(timer_clock, (0, 0))
     # update screen changes
     display.update()
 
     # refresh rate
     clock.tick(60)
 
-    giveAgentsOrders()
-
-    flag = True
-    for agent in game.agents:
-        if agent.dest == -1:
-            next_node = agent.orders.pop(0)
-            client.choose_next_edge(
-                '{"agent_id":'
-                + str(agent.id)
-                + ', "next_node_id":'
-                + str(next_node)
-                + "}"
-            )
-    if inf.moves / (time.time() - time_counter) < 10 and flag:
+    game.give_new_orders(client)
+    if inf.moves / (time.time() - time_counter) < 10:
         client.move()
 # game over:

@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 
 
@@ -20,3 +22,9 @@ class Pokemon:
 
     def __repr__(self):
         return f"[value={self.value},type={self.type},pos={self.pos}]"
+
+    def is_equal(self,other) -> bool:
+        if abs(self.pos[0]-other.pos[0]) < sys.float_info.epsilon and \
+                abs(self.pos[1]-other.pos[1]) < sys.float_info.epsilon:
+            return True
+        return False

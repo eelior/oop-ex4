@@ -11,6 +11,7 @@ class Agent:
         self.speed = speed
         self.pos = pos
         self.orders = []
+        self.next_node = 0
         try:
             self.avatar = pygame.image.load('game/sprites/ash_katchum.png')
         except:

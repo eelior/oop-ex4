@@ -51,7 +51,6 @@ class Game:
 
         self.size = self.graphAlgo.graph.v_size()
 
-
     def load_agents(self, agents_info: str):
         """load agents info to Game"""
         agents_load = json.loads(agents_info)
@@ -82,6 +81,11 @@ class Game:
             new_pokemon = Pokemon(pokemon['value'], pokemon['type'], poke_pos)
             self.size += 1
             temp_pokemons.append(new_pokemon)
+
+        # for new_poke in temp_pokemons:
+        #     for old_poke in self.pokemons:
+        #         if new_poke.is_equal(old_poke):
+        #             new_poke.is_taken = old_poke.is_taken
         self.pokemons = temp_pokemons
 
     def find_poke_location(self, pokemon: Pokemon):
@@ -102,3 +106,75 @@ class Game:
                         return dst, src
 
                     return src, dst
+
+    def giveAgentsOrders(self):
+        """
+        # give each agent his next orders
+            # for agent in agents:
+            #    foundPokemon = pokemon[0]
+            #    for pokemon in pokemons:
+            #       foundPokemon = find nearest pokemon && available
+            #    agent.nextOrders = foundPokemon
+        """
+
+    def assign_orders(self, client):
+        for agent in self.agents:
+            if agent.dest == -1:  # if agent is not moving
+                next_node = agent.orders.pop(0)
+
+                client.choose_next_edge(
+                    '{"agent_id":'
+                    + str(agent.id)
+                    + ', "next_node_id":'
+                    + str(next_node)
+                    + "}"
+                )
+    #assigns the next move for all agents. finds the closest pokemon, then tells the agent to go to the next node
+    #in that same route to the pokemon
+    def give_new_orders(self, client):
+        for agent in self.agents:
+            if agent.dest == -1:  # if agent is not moving
+                agent_src = agent.src
+                pokemon_src, pokemon_dst = self.find_closest_pokemon(agent)
+
+                if pokemon_src == -1 or pokemon_src is None:
+                    continue
+                #if agent is on the src node of the pokemon, move to the dst  shortest_path == agent.src,pokemon_src
+                if agent.src == pokemon_src:
+                    client.choose_next_edge(
+                        '{"agent_id":'
+                        + str(agent.id)
+                        + ', "next_node_id":'
+                        + str(self.graphAlgo.shortest_path(agent_src, pokemon_dst)[1][1])
+                        + "}"
+                    )
+                else:
+                    client.choose_next_edge(
+                        '{"agent_id":'
+                        + str(agent.id)
+                        + ', "next_node_id":'
+                        + str(self.graphAlgo.shortest_path(agent_src,pokemon_src)[1][1])
+                        + "}"
+                    )
+
+    #finds the closest pokemon to a given agent
+    def find_closest_pokemon(self, agent: Agent):
+        min_dist = float('inf')
+        closest_pokemon_src = closest_pokemon_dst = None
+        pokemon_assigned = False
+        for poke in self.pokemons:
+            poke_src, poke_dst = self.find_poke_location(poke)
+            #if pokemon already assigned (from previous assignments), skip (helps spread out the agents)
+            if poke.is_taken is True:
+                continue
+            curr_dist = self.graphAlgo.shortest_path(agent.src, poke_src)[0]
+            if curr_dist < min_dist:
+                min_dist = curr_dist
+                closest_pokemon_src = poke_src
+                closest_pokemon_dst = poke_dst
+                poke.is_taken = True
+                pokemon_assigned = True
+            #if all pokemons were assigned return false value
+            if not pokemon_assigned:
+                return -1, -1
+        return closest_pokemon_src,closest_pokemon_dst
