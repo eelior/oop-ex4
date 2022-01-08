@@ -9,8 +9,9 @@ class Pokemon:
         self.is_taken = False
         try:
             self.avatar_pikachu = pygame.image.load('client_python/sprites/pikachu.png')
-            self.avatar_bulbasaur = pygame.image.load('client_sprites/bulbasaur.png')
+            self.avatar_bulbasaur = pygame.image.load('client_python/sprites/bulbasaur.png')
         except:
+            print("Loaded sprites")
             self.avatar_pikachu = pygame.image.load('sprites/pikachu.png')
             self.avatar_bulbasaur = pygame.image.load('sprites/bulbasaur.png')
 
