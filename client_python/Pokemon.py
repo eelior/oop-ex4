@@ -11,8 +11,8 @@ class Pokemon:
             self.avatar_pikachu = pygame.image.load('client_python/sprites/pikachu.png')
             self.avatar_bulbasaur = pygame.image.load('client_sprites/bulbasaur.png')
         except:
-            self.avatar_pikachu = pygame.image.load('sprites/pikachu.png')
-            self.avatar_bulbasaur = pygame.image.load('sprites/bulbasaur.png')
+            self.avatar_pikachu = pygame.image.load('client_python/sprites/pikachu.png')
+            self.avatar_bulbasaur = pygame.image.load('client_python/sprites/bulbasaur.png')
 
 
     def __str__(self):

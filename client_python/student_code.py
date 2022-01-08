@@ -27,7 +27,7 @@ pygame.init()
 try:
     bg = pygame.image.load("sprites/background.jpeg")
 except:
-    bg = pygame.image.load("python_client/sprites/background.jpeg")
+    bg = pygame.image.load("client_python/sprites/background.jpeg")
 screen = display.set_mode(
     (WIDTH, HEIGHT), depth=32, flags=HWSURFACE | DOUBLEBUF | RESIZABLE
 )
