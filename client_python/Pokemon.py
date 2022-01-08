@@ -7,8 +7,8 @@ class Pokemon:
         self.type = type
         self.pos = pos
         self.is_taken = False
-        self.avatar_pikachu = pygame.image.load('client_python/pikachu.png')
-        self.avatar_bulbasaur = pygame.image.load('client_python/bulbasaur.png')
+        self.avatar_pikachu = pygame.image.load('sprites/pikachu.png')
+        self.avatar_bulbasaur = pygame.image.load('sprites/bulbasaur.png')
 
 
     def __str__(self):
