@@ -1,5 +1,5 @@
 # OOP_EX4
-<img src="client_python/sprites/logo.svg.png" alt="logo">
+<img src="game/sprites/logo.svg.png" alt="logo">
 
 <br/>
 <br/>
