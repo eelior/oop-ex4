@@ -12,12 +12,12 @@ In this assignment, we were asked to “put into practice” the main tools cove
 
 ## Game Showcase:
 ### Image
-<img src="client_python/sprites/showcase.png" alt="logo">
+<img src="game/sprites/showcase.png" alt="logo">
 
 <br/>
 
 ### Video
-<img src="client_python/sprites/showcase.png" alt="logo">
+<img src="game/sprites/showcase.png" alt="logo">
 
 
 <br/>
