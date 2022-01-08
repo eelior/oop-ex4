@@ -46,8 +46,13 @@ move_counter = 0
 
 FONT = pygame.font.SysFont("Arial", 20, bold=True)
 radius = 5
+
+# Colors
 black = Color(0, 0, 0)
+grey = Color(105,105,105)
 white = Color(255, 255, 255)
+green = Color(81, 255, 13)
+yellow = Color(255, 255, 102)
 
 game = Game(client.get_info())
 graph = game.graphAlgo.graph
@@ -87,8 +92,8 @@ def my_scale(data, x=False, y=False):
 def drawNode(n1: GraphNode):
     x = my_scale(float(n1.pos[0]), x=True)
     y = my_scale(float(n1.pos[1]), y=True)
-    gfxdraw.filled_circle(screen, int(x), int(y), radius, black)
-    gfxdraw.aacircle(screen, int(x), int(y), radius, Color(255, 255, 102))
+    gfxdraw.filled_circle(screen, int(x), int(y), radius, green)
+    gfxdraw.aacircle(screen, int(x), int(y), radius, yellow)
     id_srf = FONT.render(str(n1.id), True, black) # n1 = currNode
     rect = id_srf.get_rect(topright=(x - 10, y - 10))
     screen.blit(id_srf, rect)
@@ -99,7 +104,7 @@ def drawEdge(src: GraphNode, dest: GraphNode, color: Color):
     src_y = my_scale(src.pos[1], y=True)
     dest_x = my_scale(dest.pos[0], x=True)
     dest_y = my_scale(dest.pos[1], y=True)
-    pygame.draw.line(screen, color, (src_x, src_y), (dest_x, dest_y))
+    pygame.draw.line(screen, color, (src_x, src_y), (dest_x, dest_y), 3)
 
 def giveAgentsOrders():
     '''
@@ -188,7 +193,7 @@ while client.is_running() == "true":
         drawNode(currNode)
         for currEdge in graph.all_out_edges_of_node(currNode.id):
             dest = graph.Nodes.get(currEdge)
-            drawEdge(currNode, dest, black)
+            drawEdge(currNode, dest, green)
 
     # draw agents
     for agent in game.agents:
@@ -196,8 +201,8 @@ while client.is_running() == "true":
         rect = avatar.get_rect()
         rect.center = (agent.pos[0], agent.pos[1])
         agentId = FONT.render(str(agent.id), True, black)
-        screen.blit(avatar, rect) # draw agent avatar
         screen.blit(agentId, rect) # draw agent id
+        screen.blit(avatar, rect) # draw agent avatar
 
     # draw pokemons
     for currPokemon in game.pokemons:
@@ -208,8 +213,8 @@ while client.is_running() == "true":
         rect = avatar.get_rect()
         rect.center = (currPokemon.posScale[0], currPokemon.posScale[1])
         pokValue = FONT.render(str(currPokemon.value), True, black)
-        screen.blit(avatar, rect) # draw pokemon avatar
         screen.blit(pokValue, rect) # draw pokemon value
+        screen.blit(avatar, rect) # draw pokemon avatar
 
     # update screen changes
     display.update()
