@@ -132,7 +132,10 @@ class student_code:
 ![Grades](https://user-images.githubusercontent.com/74679553/148681799-424cebf0-1f42-40f7-9a76-e4f9f7f24cdc.png)
 
   
+<br/>
 
+## UML:
+<img src="uml.png">
 
 <br/>
 
