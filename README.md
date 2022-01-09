@@ -126,7 +126,10 @@ class student_code:
         Also where we use give_new_orders() method and move() method, which is how we actually play the game.
 
 
-
+## Performance of the algorithm:
+  This table shows the performance of the algorithm at each given level.
+  
+![Grades](https://user-images.githubusercontent.com/74679553/148681799-424cebf0-1f42-40f7-9a76-e4f9f7f24cdc.png)
 
   
 
