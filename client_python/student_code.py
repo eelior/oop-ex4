@@ -126,7 +126,7 @@ for i in range(game.num_of_agents):
 client.start()
 original_width, original_height = screen.get_width(), screen.get_height()
 while is_game_on(client) == "true":
-    inf = json.loads(
+    GameServer = json.loads(
         client.get_info(), object_hook=lambda d: SimpleNamespace(**d)
     ).GameServer
 
@@ -218,7 +218,7 @@ while is_game_on(client) == "true":
     clock.tick(60)
 
     game.give_new_orders(client)
-    if inf.moves / (time.time() - time_counter) < 10:
+    if GameServer.moves / (time.time() - time_counter) < 10:
         client.move()
 # game over:
 client.stop_connection()
