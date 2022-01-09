@@ -151,7 +151,12 @@ while is_game_on(client) == "true":
         pokemon.posScale = (x, y, 0.0)
 
     # agents
-    game.load_agents(client.get_agents())
+    try:
+        game.load_agents(client.get_agents())
+    except:
+        client.stop_connection()
+        sys.exit()
+
     for a in game.agents:
         x, y, _ = a.pos
         x = my_scale(float(x), x=True)
@@ -221,4 +226,3 @@ while is_game_on(client) == "true":
     if GameServer.moves / (time.time() - time_counter) < 10:
         client.move()
 # game over:
-client.stop_connection()
