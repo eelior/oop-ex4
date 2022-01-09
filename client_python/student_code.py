@@ -36,7 +36,6 @@ background = pygame.Surface((WIDTH, HEIGHT), depth=32, flags=RESIZABLE)
 clock = pygame.time.Clock()
 pygame.font.init()
 
-
 client = Client()
 client.start_connection(HOST, PORT)
 
@@ -77,7 +76,7 @@ def scale(data, min_screen, max_screen, min_data, max_data):
     """
 
     return ((data - min_data) / (max_data - min_data)) * (
-        max_screen - min_screen
+            max_screen - min_screen
     ) + min_screen
 
 
@@ -107,6 +106,13 @@ def drawEdge(src: GraphNode, dest: GraphNode, color: Color):
     pygame.draw.line(screen, color, (src_x, src_y), (dest_x, dest_y), 3)
 
 
+def is_game_on(client) -> bool:
+    try:
+        game_running = client.is_running()
+    except:
+        client.stop_connection()
+        sys.exit()
+    return game_running
 
 
 # add agents
@@ -116,20 +122,28 @@ for i in range(game.num_of_agents):
     st += "}"
     client.add_agent(st)
 
-
 # this commnad starts the server - the game is running now
 client.start()
 original_width, original_height = screen.get_width(), screen.get_height()
-while client.is_running() == "true":
+while is_game_on(client) == "true":
     inf = json.loads(
         client.get_info(), object_hook=lambda d: SimpleNamespace(**d)
     ).GameServer
 
-
-
     # time_delta = clock.tick(60) / 1000.0
     # pokemons
-    game.load_pokemon(client.get_pokemons())
+    try:
+        game.load_pokemon(client.get_pokemons())
+    except:
+        client.stop_connection()
+        sys.exit()
+
+    try:
+        time_to_end = client.time_to_end()
+    except:
+        client.stop_connection()
+        sys.exit()
+
     for pokemon in game.pokemons:
         x, y, _ = pokemon.pos
         x = my_scale(float(x), x=True)
@@ -188,15 +202,14 @@ while client.is_running() == "true":
 
     scale_x = float(screen.get_width()) / original_width
     scale_y = float(screen.get_height()) / original_height
-    UI_FONT = pygame.font.SysFont("Arial", int(30*screen.get_height()/original_height), bold=True)
-
+    UI_FONT = pygame.font.SysFont("Arial", int(30 * screen.get_height() / original_height), bold=True)
 
     info = json.loads(client.get_info())
-    timer_clock = UI_FONT.render("Time left:" + client.time_to_end(), True, yellow)
-    grade_score = UI_FONT.render("Grade: "+str(info['GameServer']['grade']), True, yellow)
-    move_counter = UI_FONT.render("Moves: "+str(info['GameServer']['moves']),True, yellow)
-    screen.blit(move_counter,(int(450* scale_x),0))
-    screen.blit(grade_score,(int(250* scale_x),0))
+    timer_clock = UI_FONT.render("Time left:" + time_to_end, True, yellow)
+    grade_score = UI_FONT.render("Grade: " + str(info['GameServer']['grade']), True, yellow)
+    move_counter = UI_FONT.render("Moves: " + str(info['GameServer']['moves']), True, yellow)
+    screen.blit(move_counter, (int(450 * scale_x), 0))
+    screen.blit(grade_score, (int(250 * scale_x), 0))
     screen.blit(timer_clock, (0, 0))
     # update screen changes
     display.update()
@@ -208,3 +221,4 @@ while client.is_running() == "true":
     if inf.moves / (time.time() - time_counter) < 10:
         client.move()
 # game over:
+client.stop_connection()
